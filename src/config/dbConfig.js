@@ -1,17 +1,23 @@
-var mysql = require('mysql');
+import mysql from 'mysql2/promise';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const dbConnection = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: ""
-});
+async function dbConnection() {
+  const config = {
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+  };
 
-dbConnection.connect(function(err) {
-    if (err) {
-        console.error("Error connecting to the database:", err.message);
-        return;
-    }
-    console.log("Connected to the database!");
-});
+  try {
+    const connection = await mysql.createConnection(config);
+    console.log("Conectado ao banco de dados!");
+    return connection;
+  } catch (err) {
+    console.error("Erro ao conectar ao banco de dados:", err.message);
+    throw err;
+  }
+}
 
-module.exports = dbConnection;
+export default dbConnection;
