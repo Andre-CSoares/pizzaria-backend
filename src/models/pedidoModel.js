@@ -1,11 +1,6 @@
 import dbConnection from "../config/dbConfig.js";
 
-const conexao = await dbConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "mydb"  
-});
+const conexao = await dbConnection();
 
 export async function getPedidos(){
     const query = "CALL get_pedidos()";
